@@ -1,4 +1,5 @@
 import random
+from numpy.core.fromnumeric import size
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -44,33 +45,25 @@ w = np.random.random_sample((1, 2)) # w normal 一行两列w1,w2
 b = np.random.random() 
  
 learning_rate= 1e-5
-losses = []
-for i in range(200):
-    batch_loss=[]
+batch_size=10 
+for i in range(50):
     for batch in range(len(rm)):
 
-        index = random.choice(range(len(rm)))
+        indices = random.choice(range(len(rm)),size=batch_size,)
         
-        rm_x, lstat_x = rm[index], lstat[index]
+        rm_x, lstat_x = rm[indices], lstat[indices]
         
         x = np.array([rm_x, lstat_x])
         
-        y = target[index]
+        y = target[indices]
 
         yhat=model(x,w,b)
-        # print('yhat: {}  y:{} x:{} ,' .format(yhat,y,x))
+        print('yhat: {}  y:{} x:{} ,' .format(yhat,y,x))
         loss_v= loss(yhat,y)
-
-        batch_loss.append(loss_v)
-
+        
         w = w + -1 * partial_w(x, y, yhat) * learning_rate
         b = b + -1 * partial_b(x, y, yhat) * learning_rate
         
         if batch %100 ==0:
             print('Epoch: {}  Batch:{}  ,loss: {}' .format(i,batch,loss_v))
-    losses.append(np.mean(batch_loss))
-
-plt.plot(losses)
-plt.show()
-
-print(w,b)
+ 
