@@ -105,6 +105,7 @@ if __name__ == "__main__":
     model, w, b, losses = train(linear, target, loss, partial_w, partial_b)
     plt.plot(losses)
     predicate = model(np.array([19, 7]), w, b)
+    print(w,b)
     print(predicate)
 
     plt.show()
